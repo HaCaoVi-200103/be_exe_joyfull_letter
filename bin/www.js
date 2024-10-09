@@ -8,7 +8,7 @@ import { AddressInfo } from 'net';
 
 const debug = debugModule('myapp:server');
 
-const normalizePort = (val: string): number | string | false => {
+const normalizePort = (val) => {
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -22,7 +22,7 @@ const normalizePort = (val: string): number | string | false => {
     return false;
 }
 
-const onError = (error: NodeJS.ErrnoException) => {
+const onError = (error) => {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -47,7 +47,7 @@ const onError = (error: NodeJS.ErrnoException) => {
 
 
 const onListening = () => {
-    const addr: AddressInfo | string | null = server.address();
+    const addr = server.address();
     if (addr === null) {
         debug('Unable to determine server address.');
         return;
