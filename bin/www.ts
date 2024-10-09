@@ -1,4 +1,4 @@
-import app from '../server';
+import app from '../server.ts';
 import debugModule from 'debug';
 import http from 'http';
 import 'dotenv/config';
