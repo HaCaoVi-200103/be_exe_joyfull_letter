@@ -1,11 +1,14 @@
+
+
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import initApiRoutes from './routes/index';
 import { connection } from './config';
+dotenv.config();
 const hostName = process.env.HOST_NAME || 'localhost';
 const port = process.env.PORT || "8000";
 

@@ -1,8 +1,10 @@
-import app from '../server.ts';
+import app from '../server';
 import debugModule from 'debug';
 import http from 'http';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { AddressInfo } from 'net';
+
+dotenv.config();
 
 const debug = debugModule('myapp:server');
 
