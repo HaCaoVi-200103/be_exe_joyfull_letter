@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import initApiRoutes from './routes/index';
+import { connection } from './config';
 dotenv.config();
 const hostName = process.env.HOST_NAME || 'localhost';
 const port = process.env.PORT || "8000";
@@ -33,6 +34,16 @@ app.use((err: any, req: Request, res: Response) => {
     res.status(err.status || 500);
     res.render('error');
 });
+
+(async () => {
+    try {
+        const conn = await connection.getConnection();
+        console.log('Connected to the MySQL database.');
+        conn.release(); // Release the connection back to the pool
+    } catch (err) {
+        console.error('Error connecting to the database:', err);
+    }
+})();
 
 app.listen(parseInt(port), hostName, () => {
     console.log(`Example app listening on http://${hostName}:${port}/api/v1`);
