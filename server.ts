@@ -21,10 +21,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 initApiRoutes(app);
 
-app.listen(parseInt(port), hostName, () => {
-    console.log(`Example app listening on http://${hostName}:${port}/api/v1`);
-});
-
 app.use((next: NextFunction) => {
     next(createError(404));
 });
@@ -36,6 +32,10 @@ app.use((err: any, req: Request, res: Response) => {
     // render the error page
     res.status(err.status || 500);
     res.render('error');
+});
+
+app.listen(parseInt(port), hostName, () => {
+    console.log(`Example app listening on http://${hostName}:${port}/api/v1`);
 });
 
 export default app;
