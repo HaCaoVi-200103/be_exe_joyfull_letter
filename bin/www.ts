@@ -4,11 +4,9 @@ import http from 'http';
 import 'dotenv/config';
 import { AddressInfo } from 'net';
 
-
-
 const debug = debugModule('myapp:server');
 
-const normalizePort = (val) => {
+const normalizePort = (val: string): number | string | false => {
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -22,7 +20,7 @@ const normalizePort = (val) => {
     return false;
 }
 
-const onError = (error) => {
+const onError = (error: NodeJS.ErrnoException) => {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -47,7 +45,7 @@ const onError = (error) => {
 
 
 const onListening = () => {
-    const addr = server.address();
+    const addr: AddressInfo | string | null = server.address();
     if (addr === null) {
         debug('Unable to determine server address.');
         return;
