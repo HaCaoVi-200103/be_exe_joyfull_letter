@@ -1,10 +1,9 @@
 import app from '../server';
 import debugModule from 'debug';
 import http from 'http';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import { AddressInfo } from 'net';
 
-dotenv.config();
 
 const debug = debugModule('myapp:server');
 

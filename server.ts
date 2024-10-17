@@ -5,12 +5,10 @@ import path from 'path';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import initApiRoutes from './routes/index';
 import connectionDB from './config';
 import productApiRoutes from './routes/ProductRoute';
-import Seed from './models/SeedModel';
-dotenv.config();
 
 const app = express();
 
@@ -38,16 +36,6 @@ app.use((err: any, req: Request, res: Response) => {
     res.status(err.status || 500);
     res.render('error');
 });
-
-// (async () => {
-//     try {
-//         const conn = await connection.getConnection();
-//         console.log('Connected to the MySQL database.');
-//         conn.release(); // Release the connection back to the pool
-//     } catch (err) {
-//         console.error('Error connecting to the database:', err);
-//     }
-// })();
 
 connectionDB();
 
