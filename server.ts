@@ -7,10 +7,10 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
 import initApiRoutes from './routes/index';
-import { connection } from './config';
+import connectionDB from './config';
+import productApiRoutes from './routes/ProductRoute';
+import Seed from './models/SeedModel';
 dotenv.config();
-const hostName = process.env.HOST_NAME || 'localhost';
-const port = process.env.PORT || "8000";
 
 const app = express();
 
@@ -21,10 +21,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 initApiRoutes(app);
+productApiRoutes(app);
 
-app.use((next: NextFunction) => {
+
+
+app.use((__, _, next: NextFunction) => {
     next(createError(404));
 });
+
 app.use((err: any, req: Request, res: Response) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
@@ -35,18 +39,16 @@ app.use((err: any, req: Request, res: Response) => {
     res.render('error');
 });
 
-(async () => {
-    try {
-        const conn = await connection.getConnection();
-        console.log('Connected to the MySQL database.');
-        conn.release(); // Release the connection back to the pool
-    } catch (err) {
-        console.error('Error connecting to the database:', err);
-    }
-})();
+// (async () => {
+//     try {
+//         const conn = await connection.getConnection();
+//         console.log('Connected to the MySQL database.');
+//         conn.release(); // Release the connection back to the pool
+//     } catch (err) {
+//         console.error('Error connecting to the database:', err);
+//     }
+// })();
 
-app.listen(parseInt(port), hostName, () => {
-    console.log(`Example app listening on http://${hostName}:${port}/api/v1`);
-});
+connectionDB();
 
 export default app;

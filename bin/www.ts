@@ -61,6 +61,7 @@ const onListening = () => {
 
 }
 
+const hostName = process.env.HOST_NAME || 'localhost';
 const port = normalizePort(process.env.PORT || "8000");
 app.set('port', port);
 
@@ -69,3 +70,4 @@ const server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+console.log(`Example app listening on http://${hostName}:${port}/api/v1`);
