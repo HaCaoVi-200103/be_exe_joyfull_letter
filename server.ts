@@ -9,8 +9,11 @@ import 'dotenv/config';
 import initApiRoutes from './routes/index';
 import connectionDB from './config';
 import productApiRoutes from './routes/ProductRoute';
+import authApiRoutes from './routes/Auth';
 
 const app = express();
+
+connectionDB();
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,8 +23,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 initApiRoutes(app);
 productApiRoutes(app);
+authApiRoutes(app)
 
 
+app.all("*", (req: Request, res: Response) => {
+    return res.status(200).send("API endpoint not found")
+})
 
 app.use((__, _, next: NextFunction) => {
     next(createError(404));
@@ -37,6 +44,5 @@ app.use((err: any, req: Request, res: Response) => {
     res.render('error');
 });
 
-connectionDB();
 
 export default app;
