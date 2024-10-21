@@ -6,10 +6,10 @@ const route = express.Router();
 const initApiRoutes = (app: Express) => {
     route.get('/', (req, res) => {
         res.status(200);
-        res.end("Project SDN GROUP 1")
+        res.end("Project EXE")
     });
 
-    return app.use('/api/v1', route);;
+    return app.use('/', route);;
 }
 
 export default initApiRoutes;
