@@ -1,5 +1,5 @@
 { 
     "version": 2, 
-    "builds": [{"src":"./dist/bin/www.js","use":"@vercel/node"}],
+    "builds": [{"src":"./bin/www.js","use":"@vercel/node"}],
     "rewrites": [{ "source": "/(.*)", "destination": "/api/v1" }] 
 }
