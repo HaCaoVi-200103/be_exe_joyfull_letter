@@ -8,7 +8,8 @@
     "start": "node ./bin/www.ts",
     "dev": "nodemon ./bin/www.ts ",
     "tspath": "node -r tsconfig-paths/register dist/index.js",
-    "build": "tsc"
+    "build": "tsc",
+    "vercel-buil":"echo hello"
   },
   "author": "ICao",
   "license": "ISC",
