@@ -5,11 +5,11 @@
   "main": "./bin/www.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/www.ts",
-    "dev": "nodemon ./bin/www.ts ",
+    "start": "node ./dist/bin/www.js",
+    "dev": "nodemon ./bin/www.ts",
     "tspath": "node -r tsconfig-paths/register dist/index.js",
     "build": "tsc",
-    "vercel-buil":"echo hello"
+    "vercel-build": "npm run build"
   },
   "author": "ICao",
   "license": "ISC",
