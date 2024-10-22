@@ -25,7 +25,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
         }
 
         const payload = jwt.verify(token, process.env.JWT_KEY) as CustomJwtPayload
-        // req.userId = payload.userId
+        // req.session. = payload.userId
         console.log(payload);
 
         next();

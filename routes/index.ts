@@ -1,15 +1,16 @@
-import express, { Express } from "express";
-const route = express.Router();
-
+import { Express } from "express";
+import productApiRoutes from '../routes/ProductRoute';
+import authApiRoutes from '../routes/Auth';
+import staffApiRoutes from '../routes/StaffRoute';
+import uploadApiRoutes from "../routes/UploadFile";
 /* GET home page. */
 
 const initApiRoutes = (app: Express) => {
-    route.get('/', (req, res) => {
-        res.status(200);
-        res.end("Project EXE")
-    });
+    productApiRoutes(app);
+    authApiRoutes(app)
+    staffApiRoutes(app)
+    uploadApiRoutes(app)
 
-    return app.use('/', route);;
 }
 
 export default initApiRoutes;

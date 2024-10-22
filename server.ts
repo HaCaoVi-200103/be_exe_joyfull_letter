@@ -8,9 +8,6 @@ import logger from 'morgan';
 import 'dotenv/config';
 import initApiRoutes from './routes/index';
 import connectionDB from './config/mongodb';
-import productApiRoutes from './routes/ProductRoute';
-import authApiRoutes from './routes/Auth';
-import staffApiRoutes from './routes/StaffRoute';
 
 const app = express();
 
@@ -23,9 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 initApiRoutes(app);
-productApiRoutes(app);
-authApiRoutes(app)
-staffApiRoutes(app)
 
 
 app.all("*", (req: Request, res: Response) => {
