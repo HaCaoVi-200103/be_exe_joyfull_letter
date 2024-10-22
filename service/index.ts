@@ -44,3 +44,7 @@ export const checkEmail = async (req: Request, res: Response, email: string) => 
         return null
     }
 }
+
+export const uploadImageInFirebase = async () => {
+
+}

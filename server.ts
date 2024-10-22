@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import 'dotenv/config';
 import initApiRoutes from './routes/index';
-import connectionDB from './config';
+import connectionDB from './config/mongodb';
 import productApiRoutes from './routes/ProductRoute';
 import authApiRoutes from './routes/Auth';
 import staffApiRoutes from './routes/StaffRoute';
@@ -46,10 +46,4 @@ app.use((err: any, req: Request, res: Response) => {
     res.render('error');
 });
 
-
-import Staff from './models/StaffModel';
-
-// (async (req, res) => {
-//     await Staff.create({ staff_email: "icao@gmail.com", staff_fullName: "Cao Vi", staff_password: "123", staff_phone: "0123456789" })
-// })()
 export default app;
