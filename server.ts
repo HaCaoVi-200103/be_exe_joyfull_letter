@@ -10,6 +10,7 @@ import initApiRoutes from './routes/index';
 import connectionDB from './config';
 import productApiRoutes from './routes/ProductRoute';
 import authApiRoutes from './routes/Auth';
+import staffApiRoutes from './routes/StaffRoute';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 initApiRoutes(app);
 productApiRoutes(app);
 authApiRoutes(app)
+staffApiRoutes(app)
 
 
 app.all("*", (req: Request, res: Response) => {
@@ -45,4 +47,9 @@ app.use((err: any, req: Request, res: Response) => {
 });
 
 
+import Staff from './models/StaffModel';
+
+// (async (req, res) => {
+//     await Staff.create({ staff_email: "icao@gmail.com", staff_fullName: "Cao Vi", staff_password: "123", staff_phone: "0123456789" })
+// })()
 export default app;

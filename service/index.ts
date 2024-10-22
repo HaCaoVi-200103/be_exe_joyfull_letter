@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import Product from "../models/ProductModel"
 import Category from "../models/CategoryModel"
+import Staff from "../models/StaffModel"
 
 export const checkProductById = async (req: Request, res: Response, proId: string) => {
     try {
@@ -27,5 +28,19 @@ export const checkCateById = async (req: Request, res: Response, cateId: string)
     } catch (error) {
         console.log("Not found category with id: ", cateId)
         return false
+    }
+}
+
+export const checkEmail = async (req: Request, res: Response, email: string) => {
+    try {
+        const emailCheck = await Staff.findOne({ staff_email: email })
+        if (!emailCheck) {
+            console.log("Email not exist")
+            return null
+        }
+        return emailCheck;
+    } catch (error) {
+        console.log("Email not exist")
+        return null
     }
 }
