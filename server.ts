@@ -11,7 +11,7 @@ import connectionDB from './config/mongodb';
 
 const app = express();
 
-connectionDB();
+connectionDB()
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -20,7 +20,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 initApiRoutes(app);
-
 
 app.all("*", (req: Request, res: Response) => {
     return res.status(200).send("API endpoint not found")
