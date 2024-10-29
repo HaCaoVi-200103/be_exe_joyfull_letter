@@ -3,8 +3,6 @@ import { createProduct, deleteProductById, getListProduct, getProductID, updateP
 import express, { Express } from "express";
 const route = express.Router();
 
-/* GET home page. */
-
 const productApiRoutes = (app: Express) => {
     route.get('/list-product', getListProduct);
     route.get('/get-product/:proId', getProductID);

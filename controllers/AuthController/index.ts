@@ -38,12 +38,6 @@ export const login = async (req: Request, res: Response) => {
             return res.status(400).send("Password is incorrect!!")
         }
 
-        // const token = res.cookie("jwt", createToken(res, email, staff._id), {
-        //     maxAge,
-        //     secure: true,
-        //     sameSite: "none"
-        // })
-
         const token = createToken(res, email, staff._id);
 
         return res.status(200).json({
