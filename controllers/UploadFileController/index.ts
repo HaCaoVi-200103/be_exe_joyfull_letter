@@ -10,6 +10,7 @@ const storage = getStorage()
 
 export const uploadSingleFile = async (req: Request, res: Response) => {
     try {
+
         const dateTime = giveCurrentDateTime();
         if (!req.file) {
             return res.status(400).send("No file uploaded.(File must be jpg, jpeg, png, gif)")

@@ -1,6 +1,7 @@
 import multer, { FileFilterCallback } from "multer"
 import express, { Express, Request } from "express";
 import { uploadMutipleFile, uploadSingleFile } from "../../controllers/UploadFileController";
+import verifyToken from "../../middleware";
 
 const route = express.Router();
 
@@ -16,8 +17,8 @@ const upload = multer({ storage: multer.memoryStorage(), fileFilter: (req, file,
 
 
 const uploadApiRoutes = (app: Express) => {
-    route.post("/upload-single-file", upload.single("fileName"), uploadSingleFile);
-    route.post("/upload-multiple-file", upload.array("fileList", 6), uploadMutipleFile);
+    route.post("/upload-single-file", verifyToken, upload.single("fileName"), uploadSingleFile);
+    route.post("/upload-multiple-file", verifyToken, upload.array("fileList", 6), uploadMutipleFile);
 
     return app.use('/api/v1', route);
 }
