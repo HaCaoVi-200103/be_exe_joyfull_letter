@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Gallery from "../../models/GalleryModel";
-import { checkImagesGalleryByProId } from "../../service";
+import Gallery from "../models/GalleryModel";
+import { checkImagesGalleryByProId } from "../service";
 
 export const getAllGallaryOfProduct = async (req: Request, res: Response) => {
   try {

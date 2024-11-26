@@ -1,6 +1,6 @@
-import Product from "../../models/ProductModel";
+import Product from "../models/ProductModel";
 import { Request, Response } from "express";
-import { checkCateById, checkProductById } from "../../service";
+import { checkCateById, checkProductById } from "../service";
 
 export const getListProduct = async (req: Request, res: Response) => {
   try {

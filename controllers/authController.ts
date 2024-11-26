@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { checkEmail } from "../../service";
+import { checkEmail } from "../service";
 import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
 import mongoose from "mongoose";

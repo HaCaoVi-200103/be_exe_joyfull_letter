@@ -1,18 +1,18 @@
-import express, { Express } from "express";
-import verifyToken from "../../middleware";
+import express from "express";
+import verifyToken from "../middleware";
 import {
   createGallery,
   getAllGallaryOfProduct,
-} from "../../controllers/GalleryController";
+} from "../controllers/galleryController";
 const route = express.Router();
 
-const galleryApiRoutes = (app: Express) => {
+const galleryApiRoutes = () => {
   route.get("/:proId", getAllGallaryOfProduct);
   route.post("/create", createGallery);
   route.put("/:proId", verifyToken);
   route.delete("/:proId", verifyToken);
 
-  return app.use("/api/v1/gallery", route);
+  return route;
 };
 
 export default galleryApiRoutes;

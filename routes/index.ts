@@ -1,21 +1,20 @@
 import { Express } from "express";
-import productApiRoutes from "../routes/ProductRoute";
-import authApiRoutes from "../routes/Auth";
-import staffApiRoutes from "../routes/StaffRoute";
-import uploadApiRoutes from "../routes/UploadFile";
-import seedApiRoutes from "../routes/SeedRoute";
-import categoryApiRoutes from "./CategoryRoute";
-import galleryApiRoutes from "./GalleryRoute";
-/* GET home page. */
+import productApiRoutes from "./productRoute";
+import authApiRoutes from "./authRoute";
+import staffApiRoutes from "./staffRoute";
+import uploadApiRoutes from "./uploadFileRoute";
+import seedApiRoutes from "./seedRoute";
+import categoryApiRoutes from "./categoryRoute";
+import galleryApiRoutes from "./galleryRoute";
 
 const initApiRoutes = (app: Express) => {
-  productApiRoutes(app);
-  authApiRoutes(app);
-  staffApiRoutes(app);
-  uploadApiRoutes(app);
-  seedApiRoutes(app);
-  categoryApiRoutes(app);
-  galleryApiRoutes(app);
+  app.use(process.env.VERSION_API || "", productApiRoutes());
+  app.use(process.env.VERSION_AP || "", authApiRoutes());
+  app.use(process.env.VERSION_API || "", staffApiRoutes());
+  app.use(process.env.VERSION_API || "", uploadApiRoutes());
+  app.use(process.env.VERSION_API || "", seedApiRoutes());
+  app.use(process.env.VERSION_API || "", categoryApiRoutes());
+  app.use(process.env.VERSION_API || "", galleryApiRoutes());
 };
 
 export default initApiRoutes;
