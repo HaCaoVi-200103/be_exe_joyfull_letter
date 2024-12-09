@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 initApiRoutes(app);
 
 app.all("*", (req: Request, res: Response) => {
-  return res.status(200).send("API endpoint not found");
+  return res.status(404).send("API endpoint not found");
 });
 
 app.use((__, _, next: NextFunction) => {

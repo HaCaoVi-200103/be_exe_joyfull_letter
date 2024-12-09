@@ -10,11 +10,11 @@ import {
 const route = express.Router();
 
 const categoryApiRoutes = () => {
-  route.get("/list", getAllCategory);
-  route.get("/:categoryId", getCategoryById);
-  route.post("/create", verifyToken, createCategory);
-  route.put("/:categoryId", verifyToken, updateCategory);
-  route.delete("/:categoryId", verifyToken, deleteCategory);
+  route.get("/list-category", getAllCategory);
+  route.get("/get-category/:categoryId", getCategoryById);
+  route.post("/create-category", verifyToken, createCategory);
+  route.put("/update-category/:categoryId", verifyToken, updateCategory);
+  route.delete("/delete-category/:categoryId", verifyToken, deleteCategory);
 
   return route;
 };

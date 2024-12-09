@@ -4,7 +4,7 @@ const route = express.Router();
 /* GET home page. */
 
 const staffApiRoutes = () => {
-  route.post("/staff");
+  route.post("/auth/staff");
 
   return route;
 };

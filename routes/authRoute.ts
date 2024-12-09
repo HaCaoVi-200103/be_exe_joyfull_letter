@@ -5,7 +5,7 @@ const route = express.Router();
 /* GET home page. */
 
 const authApiRoutes = () => {
-  route.post("/login", login);
+  route.post("/auth/login", login);
 
   return route;
 };

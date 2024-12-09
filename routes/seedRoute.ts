@@ -10,11 +10,11 @@ import {
 const route = express.Router();
 
 const seedApiRoutes = () => {
-  route.get("/list", getAllSeed);
-  route.get("/:seedId", getSeedById);
-  route.post("/create", verifyToken, createSeed);
-  route.put("/:seedId", verifyToken, updateSeed);
-  route.delete("/:seedId", verifyToken, deleteSeed);
+  route.get("/list-seed", getAllSeed);
+  route.get("/get-seed/:seedId", getSeedById);
+  route.post("/create-seed", verifyToken, createSeed);
+  route.put("/update-seed/:seedId", verifyToken, updateSeed);
+  route.delete("/delete-seed/:seedId", verifyToken, deleteSeed);
 
   return route;
 };
