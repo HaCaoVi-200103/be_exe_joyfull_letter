@@ -27,8 +27,6 @@ export const getAllGallaryOfProduct = async (req: Request, res: Response) => {
 export const createGallery = async (req: Request, res: Response) => {
   try {
     const { proId, images } = req.body;
-    console.log(Array.isArray(images));
-
     if (!proId || !images || !Array.isArray(images)) {
       return res.status(400).json({
         message: "Missing required field or field images not array!!",

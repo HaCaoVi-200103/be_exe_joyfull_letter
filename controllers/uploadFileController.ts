@@ -39,8 +39,6 @@ export const uploadSingleFile = async (req: Request, res: Response) => {
 
     const downloadURL = await getDownloadURL(snapshot.ref);
 
-    console.log("File successfully uploaded.");
-
     return res.status(200).json({
       message: "File uploaded to firebase storage",
       name: req.file.originalname,
