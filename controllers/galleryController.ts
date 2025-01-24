@@ -1,26 +1,36 @@
 import { Request, Response } from "express";
 import Gallery from "../models/GalleryModel";
 import { checkImagesGalleryByProId } from "../service";
+import { ResponseConfig } from "../config/response";
 
 export const getAllGallaryOfProduct = async (req: Request, res: Response) => {
   try {
     const { proId } = req.params;
     if (!proId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: proId" });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Missing required parameter product id!`,
+      });
     }
 
     const check = await checkImagesGalleryByProId(proId);
 
     if (!check) {
-      return res.status(200).json({ message: "Not found any proId in have" });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Product ID not found with id ${proId}`
+      })
     }
 
     const list = await Gallery.find({ pro_id: proId });
-    return res.status(200).json(list);
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: list
+    })
   } catch (error) {
-    return res.status(500).send("Server Internal Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -28,18 +38,18 @@ export const createGallery = async (req: Request, res: Response) => {
   try {
     const { proId, images } = req.body;
     if (!proId || !images || !Array.isArray(images)) {
-      return res.status(400).json({
-        message: "Missing required field or field images not array!!",
-      });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required field or field images not array!"
+      })
     }
 
     for (const item of images) {
-      console.log(typeof item);
-
       if (typeof item !== "string") {
-        return res.status(400).json({
-          message: "Images not array contains string",
-        });
+        return ResponseConfig(res, {
+          statusCode: 400,
+          message: "Images not array contains string!"
+        })
       }
     }
 
@@ -47,8 +57,13 @@ export const createGallery = async (req: Request, res: Response) => {
       await Gallery.create({ pro_id: proId, gal_picture: item });
     }
 
-    return res.status(201).json({ message: "Successful" });
+    return ResponseConfig(res, {
+      statusCode: 201,
+      message: "Created Successfully"
+    })
   } catch (error) {
-    return res.status(500).send("Server Internal Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };

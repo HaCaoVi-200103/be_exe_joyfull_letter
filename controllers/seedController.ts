@@ -1,14 +1,20 @@
 import { Request, Response } from "express";
 import Seed from "../models/SeedModel";
 import { checkSeedById } from "../service";
+import { ResponseConfig } from "../config/response";
 
 export const getAllSeed = async (req: Request, res: Response) => {
   try {
     const result = await Seed.find();
-    return res.status(200).json(result);
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: result
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -16,23 +22,30 @@ export const getSeedById = async (req: Request, res: Response) => {
   try {
     const seedId = req.params.seedId;
     if (!seedId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: seedId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Missing required parameter: ${seedId}`
+      });
     }
 
-    const checkSeedId = await checkSeedById(req, res, seedId);
+    const checkSeedId = await checkSeedById(seedId);
 
     if (!checkSeedId) {
-      return res
-        .status(404)
-        .json({ message: `No data with seed id with ${seedId}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found category with id: ${seedId}`
+      });
     }
     const result = await Seed.findById(seedId);
-    return res.status(200).json(result);
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: result
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -40,14 +53,22 @@ export const createSeed = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     if (!name) {
-      return res.status(400).send("Missing required fields");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required fields"
+      })
     }
 
     await Seed.create({ seed_name: name, is_delete: false });
-    return res.status(200).send("Create success");
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: `Created Successfully`
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -55,30 +76,40 @@ export const updateSeed = async (req: Request, res: Response) => {
   try {
     const seedId = req.params.seedId;
     if (!seedId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: seedId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Missing required parameter seed id!`,
+      });
     }
 
-    const checkSeedId = await checkSeedById(req, res, seedId);
+    const checkSeedId = await checkSeedById(seedId);
 
     if (!checkSeedId) {
-      return res
-        .status(404)
-        .json({ message: `No data with seed id with ${seedId}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found seed with id: ${seedId}`,
+      });
     }
 
     const { name } = req.body;
     if (!name) {
-      return res.status(400).send("Missing required fields");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required fields"
+      })
     }
 
     await Seed.findByIdAndUpdate(seedId, { seed_name: name });
 
-    return res.status(201).send("Update success");
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: `Updated Successfully`
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -86,24 +117,31 @@ export const deleteSeed = async (req: Request, res: Response) => {
   try {
     const seedId = req.params.seedId;
     if (!seedId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: seedId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Missing required parameter seed id!`,
+      });
     }
 
-    const checkSeedId = await checkSeedById(req, res, seedId);
+    const checkSeedId = await checkSeedById(seedId);
 
     if (!checkSeedId) {
-      return res
-        .status(404)
-        .json({ message: `No data with seed id with ${seedId}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found seed with id: ${seedId}`,
+      });
     }
 
     await Seed.findByIdAndUpdate(seedId, { is_delete: true });
 
-    return res.status(200).send("Delete success");
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: `Deleted Successfully`
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };

@@ -1,17 +1,20 @@
 import Product from "../models/ProductModel";
 import { Request, Response } from "express";
 import { checkCateById, checkProductById } from "../service";
+import { ResponseConfig } from "../config/response";
 
 export const getListProduct = async (req: Request, res: Response) => {
   try {
     const result = await Product.find().where({ is_delete: false });
-    if (!result) {
-      return res.status(400).send("No Data");
-    }
-    return res.status(200).json({ data: result });
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: result
+    })
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -19,30 +22,31 @@ export const getProductID = async (req: Request, res: Response) => {
   try {
     const proId = req.params.proId;
     if (!proId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: proId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Missing required parameter: ${proId}`
+      })
     }
 
-    const checkProId = await checkProductById(req, res, proId);
-
-    if (!checkProId) {
-      return res
-        .status(404)
-        .json({ message: `No data with pro id with ${proId}` });
-    }
-
-    const result = await Product.findOne({ _id: proId }).where({
-      is_delete: false,
-    });
+    const result = await checkProductById(proId);
 
     if (!result) {
-      return res.status(404).json({ message: "Data Not found", data: null });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found product with id: ${proId}`
+      })
     }
-    return res.status(200).json({ data: result });
+
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: result
+    })
+
   } catch (error) {
     console.log(error);
-    return res.status(404).json({ message: "Data Not found", data: null });
+    return ResponseConfig(res, {
+      statusCode: 500,
+    })
   }
 };
 
@@ -67,21 +71,26 @@ export const createProduct = async (req: Request, res: Response) => {
       !pro_picture ||
       !pro_description
     ) {
-      return res.status(400).send("Missing required fields");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required fields"
+      })
     }
 
     if (pro_discount > 1) {
-      return res
-        .status(400)
-        .send("Discount must be greather or equal 0 and lesster or equal 1");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Discount must be greater or equal 0 and lester or equal 1`,
+      });
     }
 
     const checkCateId = await checkCateById(req, res, cate_id);
 
     if (!checkCateId) {
-      return res
-        .status(404)
-        .json({ message: `No data with cate id with ${cate_id}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found category with id: ${cate_id}`,
+      });
     }
 
     const result = await Product.create({
@@ -93,12 +102,16 @@ export const createProduct = async (req: Request, res: Response) => {
       pro_picture,
       pro_description,
     });
-    return res
-      .status(201)
-      .send({ message: "Create successfull", data: result });
+    return ResponseConfig(res, {
+      statusCode: 201,
+      message: `Create Successfully`,
+      data: result
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -106,17 +119,19 @@ export const updateProductById = async (req: Request, res: Response) => {
   try {
     const proId = req.params.proId;
     if (!proId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter: proId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Missing required parameter product id!`,
+      });
     }
 
-    const checkProId = await checkProductById(req, res, proId);
+    const checkProId = await checkProductById(proId);
 
     if (!checkProId) {
-      return res
-        .status(404)
-        .json({ message: `No data with pro id with ${proId}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found product with id: ${proId}`
+      });
     }
 
     const {
@@ -140,21 +155,26 @@ export const updateProductById = async (req: Request, res: Response) => {
       !pro_description ||
       is_delete === undefined
     ) {
-      return res.status(400).send("Missing required fields");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required fields"
+      })
     }
 
     if (pro_discount > 1) {
-      return res
-        .status(400)
-        .send("Discount must be greather or equal 0 and lesster or equal 1");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Discount must be greater or equal 0 and lester or equal 1`
+      });
     }
 
     const checkCateId = await checkCateById(req, res, cate_id);
 
     if (!checkCateId) {
-      return res
-        .status(404)
-        .json({ message: `No data with cate id with ${cate_id}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not category with id: ${cate_id}`
+      });
     }
 
     const result = await Product.findByIdAndUpdate(
@@ -173,16 +193,16 @@ export const updateProductById = async (req: Request, res: Response) => {
       { new: true }
     );
 
-    if (!result) {
-      return res.status(200).json({ message: "Update fails" });
-    }
-
-    return res
-      .status(200)
-      .json({ message: "Update Successfull", data: result });
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: `Update Successfully`,
+      data: result
+    })
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -190,23 +210,31 @@ export const deleteProductById = async (req: Request, res: Response) => {
   try {
     const proId = req.params.proId;
     if (!proId) {
-      return res
-        .status(400)
-        .json({ message: "Missing required parameter proId" });
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required parameter proId"
+      });
     }
 
-    const checkProId = await checkProductById(req, res, proId);
+    const checkProId = await checkProductById(proId);
 
     if (!checkProId) {
-      return res
-        .status(404)
-        .json({ message: `No data with pro id with ${proId}` });
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Not found product with id: ${proId}`
+      });
     }
 
-    const result = await Product.findByIdAndUpdate(proId, { is_delete: true });
-    res.status(200).json({ message: "Delete Successfull", data: result });
+    await Product.findByIdAndUpdate(proId, { is_delete: true });
+
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: "Delete Successfully"
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };

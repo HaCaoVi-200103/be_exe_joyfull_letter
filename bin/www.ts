@@ -1,4 +1,4 @@
-import app from '../api';
+import app from '../server';
 import debugModule from 'debug';
 import http from 'http';
 import 'dotenv/config';

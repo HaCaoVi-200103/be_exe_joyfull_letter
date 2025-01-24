@@ -6,8 +6,6 @@ import Seed from "../models/SeedModel";
 import Gallery from "../models/GalleryModel";
 
 export const checkProductById = async (
-  req: Request,
-  res: Response,
   proId: string
 ) => {
   try {
@@ -15,12 +13,10 @@ export const checkProductById = async (
       is_delete: false,
     });
     if (!checkProId) {
-      console.log("Not found product with id: ", proId);
       return false;
     }
-    return true;
+    return checkProId;
   } catch (error) {
-    console.log("Not found product with id: ", proId);
     return false;
   }
 };
@@ -46,8 +42,6 @@ export const checkCateById = async (
 };
 
 export const checkSeedById = async (
-  req: Request,
-  res: Response,
   seedId: string
 ) => {
   try {
@@ -55,12 +49,10 @@ export const checkSeedById = async (
       is_delete: false,
     });
     if (!checkSeedId) {
-      console.log("Not found seed with id: ", seedId);
       return false;
     }
-    return true;
+    return checkSeedId;
   } catch (error) {
-    console.log("Not found seed with id: ", seedId);
     return false;
   }
 };

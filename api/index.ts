@@ -1,54 +1,72 @@
-import express, { Request, Response, NextFunction } from "express";
-import path from "path";
-import createError from "http-errors";
-import cookieParser from "cookie-parser";
-import logger from "morgan";
-import "dotenv/config";
-import initApiRoutes from "../routes";
-import connectionDB from "../config/mongodb";
-import cors from "cors";
-
-const app = express();
-
-connectionDB();
-
-app.use(
-  cors()
-);
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
-initApiRoutes(app);
-
-app.get('/', (req, res) => {
-  res.json({
-    name:"Joyfull Letter",
-    author:"ICao"
-  })
-})
-
-app.all("*", (req: Request, res: Response) => {
-  return res.status(404).send("API endpoint not found");
-});
+import app from '../server';
+import debugModule from 'debug';
+import http from 'http';
+import 'dotenv/config';
+import { AddressInfo } from 'net';
 
 
+const debug = debugModule('myapp:server');
 
-app.use((__, _, next: NextFunction) => {
-  next(createError(404));
-});
+const normalizePort = (val: string): number | string | false => {
+    const port = parseInt(val, 10);
 
-app.use((err: any, req: Request, res: Response) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+    if (isNaN(port)) {
+        return val;
+    }
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
-});
+    if (port >= 0) {
+        return port;
+    }
 
-export default app;
+    return false;
+}
+
+const onError = (error: NodeJS.ErrnoException) => {
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
+
+    const bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
+
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+
+const onListening = () => {
+    const addr: AddressInfo | string | null = server.address();
+    if (addr === null) {
+        debug('Unable to determine server address.');
+        return;
+    } else {
+        const bind = typeof addr === 'string'
+            ? 'pipe ' + addr
+            : 'port ' + addr.port;
+        debug('Listening on ' + bind);
+    }
+
+
+}
+
+const hostName = process.env.HOST_NAME || 'localhost';
+const port = normalizePort(process.env.PORT || "8000");
+app.set('port', port);
+
+const server = http.createServer(app);
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+console.log(`Example app listening on http://${hostName}:${port}/api/v1`);

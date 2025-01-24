@@ -10,6 +10,7 @@ const verifyToken = (req, res, next) => {
         if (!auth) {
             return res.status(401).send("You are not authenticted!");
         }
+        console.log(auth);
         const headerAuth = auth.split(" ");
         if (headerAuth.length !== 2 || headerAuth[0] !== "Bearer") {
             return res.status(401).json({ message: "Invalid Authorization format" });
@@ -21,7 +22,6 @@ const verifyToken = (req, res, next) => {
             return res.status(500).send("Internal server error");
         }
         const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_KEY);
-        // req.session. = payload.userId
         console.log(payload);
         next();
     }

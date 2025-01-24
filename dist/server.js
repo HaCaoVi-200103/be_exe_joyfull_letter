@@ -11,16 +11,33 @@ const morgan_1 = __importDefault(require("morgan"));
 require("dotenv/config");
 const index_1 = __importDefault(require("./routes/index"));
 const mongodb_1 = __importDefault(require("./config/mongodb"));
+const cors_1 = __importDefault(require("cors"));
+const response_1 = require("./config/response");
 const app = (0, express_1.default)();
 (0, mongodb_1.default)();
-app.use((0, morgan_1.default)('dev'));
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    credentials: true,
+}));
+app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.static(path_1.default.join(__dirname, 'public')));
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 (0, index_1.default)(app);
+app.get('/', (req, res) => {
+    res.json({
+        name: "Joyfull Letter",
+        author: "ICao"
+    });
+});
 app.all("*", (req, res) => {
-    return res.status(200).send("API endpoint not found");
+    // return res.status(404).send("API endpoint not found");
+    return (0, response_1.ResponseConfig)(res, {
+        statusCode: 404,
+        message: "API endpoint not found"
+    });
 });
 app.use((__, _, next) => {
     next((0, http_errors_1.default)(404));
@@ -28,9 +45,9 @@ app.use((__, _, next) => {
 app.use((err, req, res) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.error = req.app.get("env") === "development" ? err : {};
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.render("error");
 });
 exports.default = app;

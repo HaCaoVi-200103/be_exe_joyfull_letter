@@ -3,6 +3,7 @@ import { checkEmail } from "../service";
 import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
 import mongoose from "mongoose";
+import { ResponseConfig } from "../config/response";
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 const createToken = (
@@ -13,14 +14,16 @@ const createToken = (
   try {
     if (!process.env.JWT_KEY) {
       console.log("JWT_KEY is undefined");
-      return res.status(500).send("Internal Server Error");
+      return ResponseConfig(res, { statusCode: 500 });
     }
     return jwt.sign({ email, userId }, process.env.JWT_KEY, {
       expiresIn: maxAge,
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };
 
@@ -29,30 +32,46 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).send("Missing required fields");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Missing required fields"
+      })
     }
 
     const staff = await checkEmail(req, res, email);
 
     if (!staff) {
-      return res.status(404).send("Email not exist!!!");
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: "Email address does not exist in the system"
+      })
     }
 
     const auth = await compare(password, staff.staff_password);
     console.log(staff);
 
     if (!auth) {
-      return res.status(400).send("Password is incorrect!!");
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: "Password is incorrect!!"
+      })
     }
 
     const token = createToken(res, staff.staff_email, staff._id);
 
-    return res.status(200).json({
-      message: "Login Successfull",
-      token: token,
-    });
+    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 24 * 3 });
+
+    return ResponseConfig(res, {
+      statusCode: 200,
+      message: "Login Successfully",
+      data: {
+        token: token
+      }
+    })
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Internal Server Error");
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
   }
 };

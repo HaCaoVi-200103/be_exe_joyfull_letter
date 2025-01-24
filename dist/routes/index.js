@@ -3,15 +3,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ProductRoute_1 = __importDefault(require("../routes/ProductRoute"));
-const Auth_1 = __importDefault(require("../routes/Auth"));
-const StaffRoute_1 = __importDefault(require("../routes/StaffRoute"));
-const UploadFile_1 = __importDefault(require("../routes/UploadFile"));
-/* GET home page. */
+const productRoute_1 = __importDefault(require("./productRoute"));
+const authRoute_1 = __importDefault(require("./authRoute"));
+const staffRoute_1 = __importDefault(require("./staffRoute"));
+const uploadFileRoute_1 = __importDefault(require("./uploadFileRoute"));
+const seedRoute_1 = __importDefault(require("./seedRoute"));
+const categoryRoute_1 = __importDefault(require("./categoryRoute"));
+const galleryRoute_1 = __importDefault(require("./galleryRoute"));
 const initApiRoutes = (app) => {
-    (0, ProductRoute_1.default)(app);
-    (0, Auth_1.default)(app);
-    (0, StaffRoute_1.default)(app);
-    (0, UploadFile_1.default)(app);
+    app.use(process.env.VERSION_API || "", (0, productRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, authRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, staffRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, uploadFileRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, seedRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, categoryRoute_1.default)());
+    app.use(process.env.VERSION_API || "", (0, galleryRoute_1.default)());
+    return app;
 };
 exports.default = initApiRoutes;

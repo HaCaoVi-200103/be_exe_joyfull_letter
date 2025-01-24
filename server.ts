@@ -7,6 +7,7 @@ import "dotenv/config";
 import initApiRoutes from "./routes/index";
 import connectionDB from "./config/mongodb";
 import cors from "cors";
+import { ResponseConfig } from "./config/response";
 
 const app = express();
 
@@ -26,17 +27,24 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-initApiRoutes(app);
 
 app.get('/', (req, res) => {
-  res.json({
-    name:"Joyfull Letter",
-    author:"ICao"
-  })
+  return ResponseConfig(res, {
+    statusCode: 200,
+    data: {
+      name: "Joyful Letter",
+      author: "ICao"
+    }
+  });
 })
 
+initApiRoutes(app);
+
 app.all("*", (req: Request, res: Response) => {
-  return res.status(404).send("API endpoint not found");
+  return ResponseConfig(res, {
+    statusCode: 404,
+    message: "API endpoint not found"
+  })
 });
 
 
