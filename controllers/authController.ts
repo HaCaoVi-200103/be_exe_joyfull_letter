@@ -59,7 +59,16 @@ export const login = async (req: Request, res: Response) => {
 
     const token = createToken(res, staff.staff_email, staff._id);
 
-    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 24 * 3 });
+    res.cookie(
+      'token',
+      token,
+      {
+        maxAge: 1000 * 60 * 60 * 24 * 3,
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+      }
+    );
 
     return ResponseConfig(res, {
       statusCode: 200,

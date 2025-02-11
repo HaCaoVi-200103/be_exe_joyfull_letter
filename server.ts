@@ -18,7 +18,7 @@ app.use(
     origin: 'http://localhost:5173',
     methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type']
+    allowedHeaders: ['Authorization', 'Content-Type'],
   })
 );
 
