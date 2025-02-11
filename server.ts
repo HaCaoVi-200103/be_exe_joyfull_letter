@@ -15,9 +15,9 @@ connectionDB();
 
 app.use(
   cors({
-    // origin: process.env.ORIGIN_FE_URL,
-    // methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
-    // credentials: true,
+    origin: process.env.ORIGIN_FE_URL,
+    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    credentials: true,
   })
 );
 
