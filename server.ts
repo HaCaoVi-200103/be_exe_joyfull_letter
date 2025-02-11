@@ -15,10 +15,10 @@ connectionDB();
 
 app.use(
   cors({
-    origin: 'https://dashboard-exe.vercel.app',
-    methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
+    // origin: 'https://dashboard-exe.vercel.app',
+    // methods: ["GET", "POST", "DELETE", "PUT", "PATCH"],
     // credentials: true,
-    allowedHeaders: ['Authorization', 'Content-Type']
+    // allowedHeaders: ['Authorization', 'Content-Type']
   })
 );
 
