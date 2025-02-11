@@ -59,7 +59,7 @@ export const createSeed = async (req: Request, res: Response) => {
       })
     }
 
-    await Seed.create({ seed_name: name, is_delete: false });
+    await Seed.create({ seed_name: name, is_deleted: false });
     return ResponseConfig(res, {
       statusCode: 200,
       message: `Created Successfully`
@@ -132,7 +132,7 @@ export const deleteSeed = async (req: Request, res: Response) => {
       });
     }
 
-    await Seed.findByIdAndUpdate(seedId, { is_delete: true });
+    await Seed.findByIdAndUpdate(seedId, { is_deleted: true });
 
     return ResponseConfig(res, {
       statusCode: 200,

@@ -1,16 +1,16 @@
 import express from "express";
-import verifyToken from "../middleware";
 import {
   createGallery,
-  getAllGallaryOfProduct,
+  deleteGalleryOfProduct,
+  getAllGalleryOfProduct,
 } from "../controllers/galleryController";
+import { verifyToken } from "../middleware";
 const route = express.Router();
 
 const galleryApiRoutes = () => {
-  route.get("/list-gallery/:proId", getAllGallaryOfProduct);
-  route.post("/create-gallery", createGallery);
-  route.put("/update-gallery/:proId", verifyToken);
-  route.delete("/delete-gallery/:proId", verifyToken);
+  route.get("/list-gallery/:proId", getAllGalleryOfProduct);
+  route.post("/create-gallery", verifyToken, createGallery);
+  route.delete("/delete-gallery/:galId", verifyToken, deleteGalleryOfProduct);
 
   return route;
 };

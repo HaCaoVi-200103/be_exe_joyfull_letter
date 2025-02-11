@@ -5,7 +5,7 @@ import { ResponseConfig } from "../config/response";
 interface CustomJwtPayload extends JwtPayload {
   userId: string; // Hoặc số, tùy thuộc vào kiểu của userId
 }
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   try {
     const auth = req.headers.authorization;
     if (!auth) {
@@ -46,4 +46,6 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default verifyToken;
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+
+}

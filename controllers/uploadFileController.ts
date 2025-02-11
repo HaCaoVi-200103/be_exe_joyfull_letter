@@ -59,7 +59,7 @@ export const uploadSingleFile = async (req: Request, res: Response) => {
   }
 };
 
-export const uploadMutipleFile = async (req: Request, res: Response) => {
+export const uploadMultipleFile = async (req: Request, res: Response) => {
   try {
     const dateTime = giveCurrentDateTime();
     const files = req.files as Express.Multer.File[];

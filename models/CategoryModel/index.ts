@@ -2,9 +2,11 @@ import mongoose, { Schema } from "mongoose";
 
 const CategorySchema = new Schema({
     cate_name: { type: String, required: true },
-    is_delete: { type: Boolean, default: false }
-});
+    is_deleted: { type: Boolean, default: false }
+},
+    { timestamps: true }
+);
 
-const Category = mongoose.model("categorys", CategorySchema);
+const Category = mongoose.model("category", CategorySchema);
 
 export default Category;

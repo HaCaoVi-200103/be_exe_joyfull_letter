@@ -1,5 +1,4 @@
 import express from "express";
-import verifyToken from "../middleware";
 import {
   createSeed,
   deleteSeed,
@@ -7,6 +6,7 @@ import {
   getSeedById,
   updateSeed,
 } from "../controllers/seedController";
+import { verifyToken } from "../middleware";
 const route = express.Router();
 
 const seedApiRoutes = () => {

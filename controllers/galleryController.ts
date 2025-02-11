@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import Gallery from "../models/GalleryModel";
-import { checkImagesGalleryByProId } from "../service";
+import { checkGalleryIdExist, checkImagesGalleryByProId } from "../service";
 import { ResponseConfig } from "../config/response";
 
-export const getAllGallaryOfProduct = async (req: Request, res: Response) => {
+export const getAllGalleryOfProduct = async (req: Request, res: Response) => {
   try {
     const { proId } = req.params;
     if (!proId) {
@@ -23,6 +23,7 @@ export const getAllGallaryOfProduct = async (req: Request, res: Response) => {
     }
 
     const list = await Gallery.find({ pro_id: proId });
+
     return ResponseConfig(res, {
       statusCode: 200,
       data: list
@@ -60,6 +61,40 @@ export const createGallery = async (req: Request, res: Response) => {
     return ResponseConfig(res, {
       statusCode: 201,
       message: "Created Successfully"
+    })
+  } catch (error) {
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
+  }
+};
+
+
+export const deleteGalleryOfProduct = async (req: Request, res: Response) => {
+  try {
+    const { galId } = req.params;
+    if (!galId) {
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Missing required parameter gallery id!`,
+      });
+    }
+
+    const check = await checkGalleryIdExist(galId);
+
+    if (!check) {
+      return ResponseConfig(res, {
+        statusCode: 404,
+        message: `Gallery ID not found with id ${galId}`
+      })
+    }
+
+    const result = await Gallery.findByIdAndDelete(galId)
+
+    return ResponseConfig(res, {
+      message: "Deleted",
+      statusCode: 200,
+      data: result
     })
   } catch (error) {
     return ResponseConfig(res, {

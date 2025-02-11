@@ -5,6 +5,6 @@ const ManagerSeedSchema = new Schema({
     pro_id: { type: mongoose.Schema.Types.ObjectId, ref: 'products' }
 });
 
-const ManagerSeed = mongoose.model("managerseeds", ManagerSeedSchema)
+const ManagerSeed = mongoose.model("managerSeed", ManagerSeedSchema)
 
 export default ManagerSeed;

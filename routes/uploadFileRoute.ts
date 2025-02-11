@@ -1,10 +1,10 @@
 import multer, { FileFilterCallback } from "multer";
-import express, { Express, Request } from "express";
+import express, { Request } from "express";
 import {
-  uploadMutipleFile,
+  uploadMultipleFile,
   uploadSingleFile,
 } from "../controllers/uploadFileController";
-import verifyToken from "../middleware";
+import { verifyToken } from "../middleware";
 
 const route = express.Router();
 
@@ -28,7 +28,7 @@ const upload = multer({
 const uploadApiRoutes = () => {
   route.post(
     "/upload-single-file",
-    verifyToken,
+    // verifyToken,
     upload.single("fileName"),
     uploadSingleFile
   );
@@ -36,7 +36,7 @@ const uploadApiRoutes = () => {
     "/upload-multiple-file",
     verifyToken,
     upload.array("fileList", 6),
-    uploadMutipleFile
+    uploadMultipleFile
   );
 
   return route;

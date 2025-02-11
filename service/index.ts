@@ -10,7 +10,7 @@ export const checkProductById = async (
 ) => {
   try {
     const checkProId = await Product.findOne({ _id: proId }).where({
-      is_delete: false,
+      is_deleted: false,
     });
     if (!checkProId) {
       return false;
@@ -22,13 +22,11 @@ export const checkProductById = async (
 };
 
 export const checkCateById = async (
-  req: Request,
-  res: Response,
   cateId: string
 ) => {
   try {
     const checkCateId = await Category.findOne({ _id: cateId }).where({
-      is_delete: false,
+      is_deleted: false,
     });
     if (!checkCateId) {
       console.log("Not found category with id: ", cateId);
@@ -46,7 +44,7 @@ export const checkSeedById = async (
 ) => {
   try {
     const checkSeedId = await Seed.findOne({ _id: seedId }).where({
-      is_delete: false,
+      is_deleted: false,
     });
     if (!checkSeedId) {
       return false;
@@ -60,7 +58,7 @@ export const checkSeedById = async (
 export const checkCategoryById = async (categoryId: string) => {
   try {
     const check = await Category.findOne({ _id: categoryId }).where({
-      is_delete: false,
+      is_deleted: false,
     });
     if (!check) {
       console.log("Not found seed with id: ", categoryId);
@@ -111,6 +109,18 @@ export const checkImagesGalleryByProId = async (proId: string) => {
     return true;
   } catch (error) {
     console.log("Not found seed with id: ", proId);
+    return false;
+  }
+};
+
+export const checkGalleryIdExist = async (galId: string) => {
+  try {
+    const check = await Gallery.findById(galId);
+    if (!check) {
+      return false;
+    }
+    return true;
+  } catch (error) {
     return false;
   }
 };
