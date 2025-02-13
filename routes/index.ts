@@ -5,6 +5,7 @@ import uploadApiRoutes from "./uploadFileRoute";
 import seedApiRoutes from "./seedRoute";
 import categoryApiRoutes from "./categoryRoute";
 import galleryApiRoutes from "./galleryRoute";
+import blogApiRoutes from "./blogRoute";
 
 const initApiRoutes = (app: Express) => {
   app.use(process.env.VERSION_API || "", productApiRoutes());
@@ -13,6 +14,7 @@ const initApiRoutes = (app: Express) => {
   app.use(process.env.VERSION_API || "", seedApiRoutes());
   app.use(process.env.VERSION_API || "", categoryApiRoutes());
   app.use(process.env.VERSION_API || "", galleryApiRoutes());
+  app.use(process.env.VERSION_API || "", blogApiRoutes());
   return app;
 };
 

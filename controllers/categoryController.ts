@@ -89,7 +89,7 @@ export const getCategoryById = async (req: Request, res: Response) => {
     if (!checkCategoryId) {
       return ResponseConfig(res, {
         statusCode: 404,
-        message: `No data seed with category id: ${categoryId}`,
+        message: `No data category with category id: ${categoryId}`,
       });
     }
     const result = await Category.findById(categoryId);
