@@ -1,8 +1,9 @@
 import Product from "../models/ProductModel";
 import { Request, Response } from "express";
-import { checkCateById, checkProductById } from "../service";
+import { checkCateById, checkProductById, checkStockProIdExist } from "../service";
 import { ResponseConfig } from "../config/response";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+import Stock from "../models/StockModel";
 
 export const getListProduct = async (req: Request, res: Response) => {
   try {
@@ -22,6 +23,24 @@ export const getListProduct = async (req: Request, res: Response) => {
       .populate("cate_id", 'cate_name')
       .sort({ _id: -1 });
 
+    const data = []
+
+    for (const element of result) {
+      const check = await checkStockProIdExist(element._id)
+
+      if (check) {
+        const quantity = {
+          pro_quantity: +check.stock_import! - +check.stock_export!
+        }
+        const config = {
+          ...element.toObject(), ...quantity
+        }
+        data.push(config)
+      } else {
+        data.push(element)
+      }
+    }
+
     return ResponseConfig(res, {
       statusCode: 200,
       data: {
@@ -31,7 +50,7 @@ export const getListProduct = async (req: Request, res: Response) => {
           pages: totalPages,
           total: totalItems,
         },
-        result: result,
+        result: data,
       }
     })
   } catch (error) {
@@ -84,6 +103,7 @@ export const createProduct = async (req: Request, res: Response) => {
       pro_size,
       pro_picture,
       pro_description,
+      pro_quantity
     } = req.body;
 
     if (
@@ -93,7 +113,8 @@ export const createProduct = async (req: Request, res: Response) => {
       pro_discount === null ||
       !pro_size ||
       !pro_picture ||
-      !pro_description
+      !pro_description ||
+      !pro_quantity
     ) {
       return ResponseConfig(res, {
         statusCode: 400,
@@ -108,10 +129,24 @@ export const createProduct = async (req: Request, res: Response) => {
       })
     }
 
-    if (pro_discount < 0) {
+    if (typeof pro_price !== "number" || typeof pro_discount !== "number" || typeof pro_quantity !== "number") {
       return ResponseConfig(res, {
         statusCode: 400,
-        message: `Discount must be greater or equal 0`,
+        message: "Price & Discount must be number!"
+      })
+    }
+
+    if (pro_discount < 0 || pro_price < 0 || pro_discount > pro_price) {
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Price & Discount must be greater or equal 0. Price must be greater than discount!`
+      });
+    }
+
+    if (pro_quantity < 0) {
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Quantity must be greater or equal 0`,
       });
     }
 
@@ -133,6 +168,8 @@ export const createProduct = async (req: Request, res: Response) => {
       pro_picture,
       pro_description,
     });
+
+    await Stock.create({ pro_id: result._id, stock_import: pro_quantity, stock_export: 0 })
     return ResponseConfig(res, {
       statusCode: 201,
       message: `Create Successfully`,
@@ -170,6 +207,7 @@ export const updateProductById = async (req: Request, res: Response) => {
       pro_name,
       pro_price,
       pro_discount,
+      pro_quantity,
       pro_size,
       pro_picture,
       pro_description,
@@ -182,7 +220,8 @@ export const updateProductById = async (req: Request, res: Response) => {
       !pro_discount ||
       !pro_size ||
       !pro_picture === null ||
-      !pro_description
+      !pro_description ||
+      !pro_quantity
     ) {
       return ResponseConfig(res, {
         statusCode: 400,
@@ -190,7 +229,7 @@ export const updateProductById = async (req: Request, res: Response) => {
       })
     }
 
-    if (typeof pro_price !== "number" || typeof pro_discount !== "number") {
+    if (typeof pro_price !== "number" || typeof pro_discount !== "number" || typeof pro_quantity !== "number") {
       return ResponseConfig(res, {
         statusCode: 400,
         message: "Price & Discount must be number!"
@@ -201,6 +240,13 @@ export const updateProductById = async (req: Request, res: Response) => {
       return ResponseConfig(res, {
         statusCode: 400,
         message: `Price & Discount must be greater or equal 0. Price must be greater than discount!`
+      });
+    }
+
+    if (pro_quantity < 0) {
+      return ResponseConfig(res, {
+        statusCode: 400,
+        message: `Quantity must be greater or equal 0`,
       });
     }
 
@@ -227,6 +273,8 @@ export const updateProductById = async (req: Request, res: Response) => {
       },
       { new: true }
     );
+
+    await Stock.findOneAndUpdate({ pro_id: new Types.ObjectId(proId), stock_import: pro_quantity })
 
     return ResponseConfig(res, {
       statusCode: 200,

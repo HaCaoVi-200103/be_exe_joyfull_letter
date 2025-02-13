@@ -4,6 +4,8 @@ import Category from "../models/CategoryModel";
 import Staff from "../models/StaffModel";
 import Seed from "../models/SeedModel";
 import Gallery from "../models/GalleryModel";
+import Stock from "../models/StockModel";
+import { Types } from "mongoose";
 
 export const checkProductById = async (
   proId: string
@@ -120,6 +122,18 @@ export const checkGalleryIdExist = async (galId: string) => {
       return false;
     }
     return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const checkStockProIdExist = async (proId: Types.ObjectId) => {
+  try {
+    const result = await Stock.findOne({ pro_id: proId })
+    if (!result) {
+      return false;
+    }
+    return result;
   } catch (error) {
     return false;
   }
