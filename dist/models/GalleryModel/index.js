@@ -25,8 +25,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const GallerySchema = new mongoose_1.Schema({
-    pro_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'products' }, // Reference to Product
+    pro_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'product' }, // Reference to Product
     gal_picture: { type: String, required: true }
 });
-const Gallery = mongoose_1.default.model("gallerys", GallerySchema);
+const Gallery = mongoose_1.default.model("gallery", GallerySchema);
 exports.default = Gallery;

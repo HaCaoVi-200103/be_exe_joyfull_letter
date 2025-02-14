@@ -26,7 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const SeedSchema = new mongoose_1.Schema({
     seed_name: { type: String, required: true },
-    is_delete: { type: Boolean, default: false },
+    is_deleted: { type: Boolean, default: false },
 });
 const Seed = mongoose_1.default.model("seeds", SeedSchema);
 exports.default = Seed;

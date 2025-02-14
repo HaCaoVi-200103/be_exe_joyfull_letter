@@ -28,5 +28,5 @@ const ManagerSeedSchema = new mongoose_1.Schema({
     seed_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'seeds' },
     pro_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'products' }
 });
-const ManagerSeed = mongoose_1.default.model("managerseeds", ManagerSeedSchema);
+const ManagerSeed = mongoose_1.default.model("managerSeed", ManagerSeedSchema);
 exports.default = ManagerSeed;

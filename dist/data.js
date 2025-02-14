@@ -16,7 +16,7 @@ exports.sampleProducts = [
         pro_description: "Beautiful handmade birthday card made from recycled paper with unique designs.",
         create_at: new Date(),
         update_at: null,
-        is_delete: false
+        is_deleted: false
     },
     {
         cate_id: new mongoose_1.default.Types.ObjectId("6710c2be8038518ec5033546"),
@@ -28,7 +28,7 @@ exports.sampleProducts = [
         pro_description: "Elegant thank you card with hand-painted floral art on recycled paper.",
         create_at: new Date(),
         update_at: null,
-        is_delete: false
+        is_deleted: false
     },
     {
         cate_id: new mongoose_1.default.Types.ObjectId("6710c2be8038518ec5033546"),
@@ -40,7 +40,7 @@ exports.sampleProducts = [
         pro_description: "Luxurious wedding invitation card crafted with lace and handmade paper.",
         create_at: new Date(),
         update_at: null,
-        is_delete: false
+        is_deleted: false
     },
     {
         cate_id: new mongoose_1.default.Types.ObjectId("6710c2be8038518ec5033546"),
@@ -52,6 +52,6 @@ exports.sampleProducts = [
         pro_description: "Festive Christmas card with eco-friendly materials and a personalized message option.",
         create_at: new Date(),
         update_at: null,
-        is_delete: false
+        is_deleted: false
     }
 ];

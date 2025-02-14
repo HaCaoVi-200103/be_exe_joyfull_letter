@@ -25,16 +25,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
 const ProductSchema = new mongoose_1.Schema({
-    cate_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "categorys" }, // Reference to Category
+    cate_id: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "category" }, // Reference to Category
     pro_name: { type: String, required: true },
-    pro_price: { type: Number, min: 0, required: true },
-    pro_discount: { type: Number, required: true, max: 1, min: 0 },
-    pro_size: { type: String, required: true },
-    pro_picture: { type: String, required: true },
-    pro_description: { type: String, required: true },
-    create_at: { type: Date, default: Date.now },
-    update_at: { type: Date, default: null },
-    is_delete: { type: Boolean, default: false },
-});
-const Product = mongoose_1.default.model("products", ProductSchema);
+    pro_price: { type: Number, min: 0, required: true, default: 0 },
+    pro_discount: { type: Number, required: true, default: 0 },
+    pro_size: { type: [String], required: true },
+    pro_picture: { type: String, required: true, default: "" },
+    pro_description: { type: String, required: true, default: "" },
+    is_deleted: { type: Boolean, required: true, default: false },
+}, { timestamps: true });
+const Product = mongoose_1.default.model("product", ProductSchema);
 exports.default = Product;

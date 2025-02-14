@@ -12,33 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkImagesGalleryByProId = exports.giveCurrentDateTime = exports.checkEmail = exports.checkCategoryById = exports.checkSeedById = exports.checkCateById = exports.checkProductById = void 0;
+exports.checkBlogIdExist = exports.checkStockProIdExist = exports.checkGalleryIdExist = exports.checkImagesGalleryByProId = exports.giveCurrentDateTime = exports.checkEmail = exports.checkCategoryById = exports.checkSeedById = exports.checkCateById = exports.checkProductById = void 0;
 const ProductModel_1 = __importDefault(require("../models/ProductModel"));
 const CategoryModel_1 = __importDefault(require("../models/CategoryModel"));
 const StaffModel_1 = __importDefault(require("../models/StaffModel"));
 const SeedModel_1 = __importDefault(require("../models/SeedModel"));
 const GalleryModel_1 = __importDefault(require("../models/GalleryModel"));
-const checkProductById = (req, res, proId) => __awaiter(void 0, void 0, void 0, function* () {
+const StockModel_1 = __importDefault(require("../models/StockModel"));
+const BlogModel_1 = __importDefault(require("../models/BlogModel"));
+const checkProductById = (proId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkProId = yield ProductModel_1.default.findOne({ _id: proId }).where({
-            is_delete: false,
+            is_deleted: false,
         });
         if (!checkProId) {
-            console.log("Not found product with id: ", proId);
             return false;
         }
-        return true;
+        return checkProId;
     }
     catch (error) {
-        console.log("Not found product with id: ", proId);
         return false;
     }
 });
 exports.checkProductById = checkProductById;
-const checkCateById = (req, res, cateId) => __awaiter(void 0, void 0, void 0, function* () {
+const checkCateById = (cateId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkCateId = yield CategoryModel_1.default.findOne({ _id: cateId }).where({
-            is_delete: false,
+            is_deleted: false,
         });
         if (!checkCateId) {
             console.log("Not found category with id: ", cateId);
@@ -52,19 +52,17 @@ const checkCateById = (req, res, cateId) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.checkCateById = checkCateById;
-const checkSeedById = (req, res, seedId) => __awaiter(void 0, void 0, void 0, function* () {
+const checkSeedById = (seedId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const checkSeedId = yield SeedModel_1.default.findOne({ _id: seedId }).where({
-            is_delete: false,
+            is_deleted: false,
         });
         if (!checkSeedId) {
-            console.log("Not found seed with id: ", seedId);
             return false;
         }
-        return true;
+        return checkSeedId;
     }
     catch (error) {
-        console.log("Not found seed with id: ", seedId);
         return false;
     }
 });
@@ -72,7 +70,7 @@ exports.checkSeedById = checkSeedById;
 const checkCategoryById = (categoryId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const check = yield CategoryModel_1.default.findOne({ _id: categoryId }).where({
-            is_delete: false,
+            is_deleted: false,
         });
         if (!check) {
             console.log("Not found seed with id: ", categoryId);
@@ -124,3 +122,42 @@ const checkImagesGalleryByProId = (proId) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.checkImagesGalleryByProId = checkImagesGalleryByProId;
+const checkGalleryIdExist = (galId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const check = yield GalleryModel_1.default.findById(galId);
+        if (!check) {
+            return false;
+        }
+        return true;
+    }
+    catch (error) {
+        return false;
+    }
+});
+exports.checkGalleryIdExist = checkGalleryIdExist;
+const checkStockProIdExist = (proId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield StockModel_1.default.findOne({ pro_id: proId });
+        if (!result) {
+            return false;
+        }
+        return result;
+    }
+    catch (error) {
+        return false;
+    }
+});
+exports.checkStockProIdExist = checkStockProIdExist;
+const checkBlogIdExist = (blogId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield BlogModel_1.default.findById(blogId);
+        if (!result) {
+            return false;
+        }
+        return result;
+    }
+    catch (error) {
+        return false;
+    }
+});
+exports.checkBlogIdExist = checkBlogIdExist;

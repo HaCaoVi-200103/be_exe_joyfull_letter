@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const api_1 = __importDefault(require("../api"));
+const server_1 = __importDefault(require("../server"));
 const debug_1 = __importDefault(require("debug"));
 const http_1 = __importDefault(require("http"));
 require("dotenv/config");
@@ -53,8 +53,8 @@ const onListening = () => {
 };
 const hostName = process.env.HOST_NAME || 'localhost';
 const port = normalizePort(process.env.PORT || "8000");
-api_1.default.set('port', port);
-const server = http_1.default.createServer(api_1.default);
+server_1.default.set('port', port);
+const server = http_1.default.createServer(server_1.default);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
