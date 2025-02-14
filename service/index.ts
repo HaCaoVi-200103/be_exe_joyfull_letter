@@ -6,6 +6,7 @@ import Seed from "../models/SeedModel";
 import Gallery from "../models/GalleryModel";
 import Stock from "../models/StockModel";
 import { Types } from "mongoose";
+import Blog from "../models/BlogModel";
 
 export const checkProductById = async (
   proId: string
@@ -130,6 +131,18 @@ export const checkGalleryIdExist = async (galId: string) => {
 export const checkStockProIdExist = async (proId: Types.ObjectId) => {
   try {
     const result = await Stock.findOne({ pro_id: proId })
+    if (!result) {
+      return false;
+    }
+    return result;
+  } catch (error) {
+    return false;
+  }
+};
+
+export const checkBlogIdExist = async (blogId: string) => {
+  try {
+    const result = await Blog.findById(blogId)
     if (!result) {
       return false;
     }

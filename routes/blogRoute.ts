@@ -1,13 +1,12 @@
 import express from "express";
-import { createBlog, getAllBlog } from "../controllers/blogController";
+import { createBlog, deleteBlog, getAllBlog, updateBlog } from "../controllers/blogController";
 const route = express.Router();
 
 const blogApiRoutes = () => {
     route.get("/list-blog", getAllBlog);
-    route.get("/get-blog/:blogId",);
     route.post("/create-blog", createBlog);
-    route.put("/update-blog/:blogId",);
-    route.delete("/delete-blog/:blogId",);
+    route.put("/update-blog/:blogId", updateBlog);
+    route.delete("/delete-blog/:blogId", deleteBlog);
 
     return route;
 };
