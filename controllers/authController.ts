@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import { compare } from "bcrypt";
 import mongoose from "mongoose";
 import { ResponseConfig } from "../config/response";
+import Product from "../models/ProductModel";
+import Blog from "../models/BlogModel";
+import Order from "../models/OrderModel";
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 const createToken = (
@@ -84,3 +87,24 @@ export const login = async (req: Request, res: Response) => {
     });
   }
 };
+
+
+export const getTotal = async (req: Request, res: Response) => {
+  try {
+    const product = await Product.countDocuments({ is_deleted: false });
+    const blog = await Blog.countDocuments();
+    const order = await Order.countDocuments();
+
+    return ResponseConfig(res, {
+      statusCode: 200,
+      data: {
+        product, order, blog
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return ResponseConfig(res, {
+      statusCode: 500
+    });
+  }
+}
